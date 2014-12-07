@@ -7,11 +7,26 @@ output:
 
 
 ## Loading and preprocessing the data
+```{r, echo = TRUE}
 
+act_data <- read.csv("activity.csv")
+# open libraries
+# library(plyr)
+library(ggplot2)
+library(scales)
+```
 
 
 ## What is mean total number of steps taken per day?
+1.1 Make a histogram of the total number of steps taken each day.
 
+```{r, echo = TRUE}
+act_data$date <- as.Date(act_data$date)
+act_data$steps <- as.double(act_data$steps)
+qplot(act_data$date, y=act_data$steps, geom="histogram", binwidth = 61, stat="identity",
+      xlab = "Date", ylab = "Total steps per day", 
+      main = "Total Number Of Steps Taken Each Day")
+```
 
 
 ## What is the average daily activity pattern?
