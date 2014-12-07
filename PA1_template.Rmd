@@ -11,9 +11,12 @@ output:
 
 act_data <- read.csv("activity.csv")
 # open libraries
-# library(plyr)
+library(plyr)
 library(ggplot2)
 library(scales)
+# pre-processing
+# total step per day
+steps_day <- ddply(act_data, .(date), summarise, sum.steps = sum(steps), na.rm = TRUE)
 ```
 
 
@@ -28,6 +31,15 @@ qplot(act_data$date, y=act_data$steps, geom="histogram", binwidth = 61, stat="id
       main = "Total Number Of Steps Taken Each Day")
 ```
 
+Mean steps per day
+```{r, echo = TRUE}
+mean(steps_day$sum.steps, na.rm = TRUE)
+```
+
+Median steps per day
+```{r, echo = TRUE}
+median(steps_day$sum.steps, na.rm = TRUE)
+```
 
 ## What is the average daily activity pattern?
 
