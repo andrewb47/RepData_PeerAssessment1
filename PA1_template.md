@@ -73,7 +73,44 @@ So interval 835 has the highest average number of steps amounting to 206.1698.
 
 
 ## 3. Imputing missing values
+### 3.1 Number of missing values
+
+```r
+# missing_tot <- 
+```
+In the original dataset there are 'r missing_tot' rows with the value missing for the number of steps in an interval.
+
+### 3.2 Filling missing values
+Missing values will be filled by *?? how are we going to do this including a good way of doing it for days with no values ??*.
+
+```r
+# 
+```
+
+### 3.3 New dataset
+A new dataset is created with the missing values filled.
+
+```r
+# missing_tot <- 
+```
+
+### 3.4 Compare results with original
+
+```r
+# missing_tot <- 
+```
 
 
 
 ## 4. Are there differences in activity patterns between weekdays and weekends?
+### 4.1 Create 'weekday' 'weekend' factor
+
+```r
+# missing_tot <- 
+```
+
+### 4.2 Panel plot
+
+```r
+# missing_tot <- 
+```
