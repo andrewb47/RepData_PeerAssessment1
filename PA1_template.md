@@ -19,7 +19,7 @@ steps_int <- ddply(act_data, .(interval), summarise, mean_steps = mean(steps, na
 
 
 ## 1. What is mean total number of steps taken per day?
-1.1 Make a histogram of the total number of steps taken each day.
+### 1.1 Make a histogram of the total number of steps taken each day.
 
 
 ```r
@@ -36,30 +36,18 @@ qplot(act_data$date, y=act_data$steps, geom="histogram", binwidth = 61, stat="id
 
 ![plot of chunk unnamed-chunk-2](./PA1_template_files/figure-html/unnamed-chunk-2.png) 
 
-1.2 Calculate the mean and median total number of steps taken per day
+### 1.2 Calculate the mean and median total number of steps taken per day
 
-Mean steps per day
-
-```r
-mean(steps_day$sum.steps, na.rm = TRUE)
-```
-
-```
-## [1] 9354
-```
-
-Median steps per day
 
 ```r
-median(steps_day$sum.steps, na.rm = TRUE)
+mean_steps_day <- mean(steps_day$sum.steps, na.rm = TRUE)
+median_steps_day <- median(steps_day$sum.steps, na.rm = TRUE)
 ```
 
-```
-## [1] 10395
-```
+The mean of the total number of steps per day is 9354.2295. And the median of the total number of steps per day is 10395.
 
 ## 2. What is the average daily activity pattern?
-2.1 A time series plot (type = "l" ) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days.
+### 2.1 A time series plot (type = "l" ) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days.
 
 
 ```r
@@ -70,7 +58,19 @@ plot(steps_int$interval, steps_int$mean_steps, type = "l",
      ylab = "Average number of steps")
 ```
 
-![plot of chunk unnamed-chunk-5](./PA1_template_files/figure-html/unnamed-chunk-5.png) 
+![plot of chunk unnamed-chunk-4](./PA1_template_files/figure-html/unnamed-chunk-4.png) 
+
+### 2.2 Which 5-minute interval contains the maximum number of steps?
+
+Which 5-minute interval, on average across all the days (y-axis) in the dataset, contains the maximum number of steps?
+
+```r
+max_int <- steps_int$interval[which.max(steps_int$mean_steps)]
+max_step_int <- steps_int$mean_steps[which.max(steps_int$mean_steps)]
+```
+
+So interval 835 has the highest average number of steps amounting to 206.1698.
+
 
 ## 3. Imputing missing values
 
