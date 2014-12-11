@@ -55,10 +55,12 @@ qplot(act_data$date, y=act_data$steps, geom="histogram", binwidth = 61, stat="id
 
 ```r
 mean_steps_day <- mean(steps_day$sum.steps, na.rm = TRUE)
+mean_steps_day_i <- as.integer(mean_steps_day)
 median_steps_day <- median(steps_day$sum.steps, na.rm = TRUE)
+median_steps_day_i <- as.integer(median_steps_day)
 ```
 
-The mean of the total number of steps per day is 9354.2295. And the median of the total number of steps per day is 10395.
+The mean of the total number of steps per day is 9354. And the median of the total number of steps per day is 10395.
 
 ## 2. What is the average daily activity pattern?
 ### 2.1 A time series plot (type = "l" ) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days.
@@ -150,12 +152,14 @@ steps_day_no_na <- ddply(act_data_no_na, .(date), summarise, sum.steps = sum(ste
 steps_int_no_na <- ddply(act_data_no_na, .(interval), summarise, mean_steps = mean(steps, na.rm = TRUE))
 
 mean_steps_day_no_na <- mean(steps_day_no_na$sum.steps, na.rm = TRUE)
+mean_steps_day_no_na_i <- as.integer(mean_steps_day_no_na)
 median_steps_day_no_na <- median(steps_day_no_na$sum.steps, na.rm = TRUE)
+median_steps_day_no_na_i <- as.integer(median_steps_day_no_na)
 ```
 
-The mean of the total number of steps per day with imputed data is 1.0766 &times; 10<sup>4</sup> compared to 9354.2295 in the original data.
+The mean of the total number of steps per day with imputed data is 10766 compared to 9354 in the original data.
 
-The median of the total number of steps per day is with imputed data is 1.0766 &times; 10<sup>4</sup> compared to 10395in the original data.
+The median of the total number of steps per day is with imputed data is 10766 compared to 10395in the original data.
 
 
 ## 4. Are there differences in activity patterns between weekdays and weekends?

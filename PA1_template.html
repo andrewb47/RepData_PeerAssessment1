@@ -93,8 +93,10 @@ qplot(act_data$date, y=act_data$steps, geom=&quot;histogram&quot;, binwidth = 61
 <div id="calculate-the-mean-and-median-total-number-of-steps-taken-per-day" class="section level3">
 <h3>1.2 Calculate the mean and median total number of steps taken per day</h3>
 <pre class="r"><code>mean_steps_day &lt;- mean(steps_day$sum.steps, na.rm = TRUE)
-median_steps_day &lt;- median(steps_day$sum.steps, na.rm = TRUE)</code></pre>
-<p>The mean of the total number of steps per day is 9354.2295. And the median of the total number of steps per day is 10395.</p>
+mean_steps_day_i &lt;- as.integer(mean_steps_day)
+median_steps_day &lt;- median(steps_day$sum.steps, na.rm = TRUE)
+median_steps_day_i &lt;- as.integer(median_steps_day)</code></pre>
+<p>The mean of the total number of steps per day is 9354. And the median of the total number of steps per day is 10395.</p>
 </div>
 </div>
 <div id="what-is-the-average-daily-activity-pattern" class="section level2">
@@ -169,9 +171,11 @@ steps_day_no_na &lt;- ddply(act_data_no_na, .(date), summarise, sum.steps = sum(
 steps_int_no_na &lt;- ddply(act_data_no_na, .(interval), summarise, mean_steps = mean(steps, na.rm = TRUE))
 
 mean_steps_day_no_na &lt;- mean(steps_day_no_na$sum.steps, na.rm = TRUE)
-median_steps_day_no_na &lt;- median(steps_day_no_na$sum.steps, na.rm = TRUE)</code></pre>
-<p>The mean of the total number of steps per day with imputed data is 1.0766 × 10<sup>4</sup> compared to 9354.2295 in the original data.</p>
-<p>The median of the total number of steps per day is with imputed data is 1.0766 × 10<sup>4</sup> compared to 10395in the original data.</p>
+mean_steps_day_no_na_i &lt;- as.integer(mean_steps_day_no_na)
+median_steps_day_no_na &lt;- median(steps_day_no_na$sum.steps, na.rm = TRUE)
+median_steps_day_no_na_i &lt;- as.integer(median_steps_day_no_na)</code></pre>
+<p>The mean of the total number of steps per day with imputed data is 10766 compared to 9354 in the original data.</p>
+<p>The median of the total number of steps per day is with imputed data is 10766 compared to 10395in the original data.</p>
 </div>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
