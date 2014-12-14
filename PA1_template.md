@@ -23,7 +23,6 @@ library(reshape)
 ```
 
 ```r
-# library(mice)
 # pre-processing
 # total steps per day
 steps_day <- ddply(act_data, .(date), summarise, sum.steps = sum(steps, na.rm = TRUE))
@@ -83,9 +82,10 @@ Which 5-minute interval, on average across all the days (y-axis) in the dataset,
 ```r
 max_int <- steps_int$interval[which.max(steps_int$mean_steps)]
 max_step_int <- steps_int$mean_steps[which.max(steps_int$mean_steps)]
+max_step_int_i <- as.integer(max_step_int)
 ```
 
-So interval 835 has the highest average number of steps amounting to 206.1698.
+So interval 835 has the highest average number of steps amounting to 206.
 
 
 ## 3. Imputing missing values
@@ -98,7 +98,7 @@ missing_tot <- nrow(missing_data)
 In the original dataset there are 2304 rows with the value missing for the number of steps in an interval.
 
 ### 3.2 Filling missing values
-Missing values will be filled with the mean number of steps of the respective 5-minute interval (ignoring missing data).
+Missing values will be filled with the mean number of steps of the respective 5-minute interval according to the actual data.
 
 ```r
 # 3.2 steps to replace NA's with mean for the 5 minute interval apart from NAs
@@ -126,7 +126,8 @@ A new dataset is created with the missing values filled.
 act_data_no_na <- melt(act_data_wide, id = c("date", "interval"))
 names(act_data_no_na) <- c("date","steps","interval")
 act_data_no_na$date <- as.character(act_data_no_na$date) 
-act_data_no_na_ord <- act_data_no_na[order(act_data_no_na$date, act_data_no_na$interval),]
+act_data_no_na_ord <- act_data_no_na[order(act_data_no_na$date, 
+                                           act_data_no_na$interval),]
 act_data_no_na_ord$date <- as.Date(act_data_no_na_ord$date)  
 ```
 
@@ -147,30 +148,67 @@ qplot(act_data_no_na_ord$date, y=act_data_no_na_ord$steps, geom="histogram",
 ```r
 # mean, median number of steps per day with imputed data
 # total steps per day
-steps_day_no_na <- ddply(act_data_no_na, .(date), summarise, sum.steps = sum(steps, na.rm = TRUE))
+steps_day_no_na <- ddply(act_data_no_na, .(date), summarise, 
+                         sum.steps = sum(steps))
 # mean steps per five minute interval across all days
-steps_int_no_na <- ddply(act_data_no_na, .(interval), summarise, mean_steps = mean(steps, na.rm = TRUE))
+steps_int_no_na <- ddply(act_data_no_na, .(interval), summarise, 
+                         mean_steps = mean(steps))
 
 mean_steps_day_no_na <- mean(steps_day_no_na$sum.steps, na.rm = TRUE)
 mean_steps_day_no_na_i <- as.integer(mean_steps_day_no_na)
 median_steps_day_no_na <- median(steps_day_no_na$sum.steps, na.rm = TRUE)
 median_steps_day_no_na_i <- as.integer(median_steps_day_no_na)
+# increase in the mean
+steps_inc <- median_steps_day_no_na_i - mean_steps_day_i
 ```
 
-The mean of the total number of steps per day with imputed data is 10766 compared to 9354 in the original data.
+The mean of the total number of steps per day with imputed data is 10766 compared to 9354 in the original data. That is an increase of 1412.
 
-The median of the total number of steps per day is with imputed data is 10766 compared to 10395in the original data.
+The median of the total number of steps per day with imputed data is 10766 compared to 10395in the original data.
 
 
 ## 4. Are there differences in activity patterns between weekdays and weekends?
 ### 4.1 Create 'weekday' 'weekend' factor
+A new factor variable is created in the dataset of average steps per interval with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
 ```r
-# missing_tot <- 
+# Q4 weekdays factor added to actual data with imputed data
+act_weekdays <- weekdays(act_data_no_na_ord$date)
+for (i in 1:17568) {
+        if (act_weekdays[i] == "Saturday" | act_weekdays[i] == "Sunday") {
+                act_weekdays[i] <- "weekend"
+        } else {act_weekdays[i] <- "weekday"                
+        }
+}
+act_weekdays <- as.factor(act_weekdays)
+act_data_no_na_ord <- cbind(act_data_no_na_ord, act_weekdays)
+#
+act_data_weekend <- subset(act_data_no_na_ord, act_weekdays == "weekend")
+act_data_weekday <- subset(act_data_no_na_ord, act_weekdays == "weekday")
+#
+steps_int_weekend <- ddply(act_data_weekend, .(interval), summarise,
+                           mean_steps = mean(steps))
+steps_int_weekday <- ddply(act_data_weekday, .(interval), summarise,
+                           mean_steps = mean(steps))
+#
+we_factor <- c(1:288)
+we_factor <- as.character(we_factor)
+for (i in 1:288) we_factor[i] <- "weekend"
+steps_int_weekend <- cbind(steps_int_weekend, we_factor)
+for (i in 1:288) we_factor[i] <- "weekday"
+steps_int_weekday <- cbind(steps_int_weekday, we_factor)
+steps_int_week_end_day <- rbind(steps_int_weekend, steps_int_weekday)
 ```
 
 ### 4.2 Panel plot
+This plot compares average activity in the weekend with weekdays. It shows that activity is slower to start in the weekend but peaks at around the same time as on weekdays (about interval 835). And for the rest of the day activity levels are higher in the weekend and drop towards zero later.
+
 
 ```r
-# missing_tot <- 
+qplot(interval, mean_steps, data = steps_int_week_end_day, 
+       geom = "line", facets = we_factor ~.)
 ```
+
+![plot of chunk unnamed-chunk-12](./PA1_template_files/figure-html/unnamed-chunk-12.png) 
+
+
