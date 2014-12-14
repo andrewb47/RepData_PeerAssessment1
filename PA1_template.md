@@ -153,7 +153,7 @@ steps_day_no_na <- ddply(act_data_no_na, .(date), summarise,
 # mean steps per five minute interval across all days
 steps_int_no_na <- ddply(act_data_no_na, .(interval), summarise, 
                          mean_steps = mean(steps))
-
+#
 mean_steps_day_no_na <- mean(steps_day_no_na$sum.steps, na.rm = TRUE)
 mean_steps_day_no_na_i <- as.integer(mean_steps_day_no_na)
 median_steps_day_no_na <- median(steps_day_no_na$sum.steps, na.rm = TRUE)
@@ -210,5 +210,6 @@ qplot(interval, mean_steps, data = steps_int_week_end_day,
 ```
 
 ![plot of chunk unnamed-chunk-12](./PA1_template_files/figure-html/unnamed-chunk-12.png) 
+
 
 

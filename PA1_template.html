@@ -172,7 +172,7 @@ steps_day_no_na &lt;- ddply(act_data_no_na, .(date), summarise,
 # mean steps per five minute interval across all days
 steps_int_no_na &lt;- ddply(act_data_no_na, .(interval), summarise, 
                          mean_steps = mean(steps))
-
+#
 mean_steps_day_no_na &lt;- mean(steps_day_no_na$sum.steps, na.rm = TRUE)
 mean_steps_day_no_na_i &lt;- as.integer(mean_steps_day_no_na)
 median_steps_day_no_na &lt;- median(steps_day_no_na$sum.steps, na.rm = TRUE)
